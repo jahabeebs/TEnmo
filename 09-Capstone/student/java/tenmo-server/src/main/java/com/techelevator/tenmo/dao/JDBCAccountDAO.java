@@ -12,11 +12,9 @@ public class JDBCAccountDAO implements AccountDAO {
 	private JdbcTemplate jdbcTemplate;
 	private Account account;
 	
-	public JDBCAccountDAO(Account account) {
+	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = new JdbcTemplate();
-		this.account = account;
 	}
-	
 	
 	@Override
 	public BigDecimal getBalance(int userId) {
