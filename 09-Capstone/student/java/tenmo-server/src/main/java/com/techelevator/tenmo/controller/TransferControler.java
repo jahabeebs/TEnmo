@@ -20,21 +20,15 @@ import com.techelevator.tenmo.security.jwt.TokenProvider;
 public class TransferControler {
 
 	private JDBCTransfersDAO transfersDAO;
-	private final TokenProvider tokenProvider;
-	private final AuthenticationManagerBuilder authenticationManagerBuilder;
-	
-	public TransferControler(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-		this.transfersDAO = new JDBCTransfersDAO();
-		this.tokenProvider = tokenProvider;
-		this.authenticationManagerBuilder = authenticationManagerBuilder;
-	}
 	
 	@RequestMapping(path = "account/transfers/{id}", method = RequestMethod.GET)
 	private List<Transfers> getAllMyTransfers(@PathVariable int id) {
+		System.out.println("TEST!!!!");
 		List<Transfers> output = transfersDAO.getAllTransfers(id);
 		return output;
 	}
 	
+	@PreAuthorize("permitAll()")
 	@RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
 	public Transfers getSelectedTransfer(@PathVariable int id) {
 		Transfers transfer = transfersDAO.getTransferById(id);
@@ -44,6 +38,12 @@ public class TransferControler {
 	@RequestMapping(path = "transfers", method = RequestMethod.POST)
 	public void sendTransferRequest(@RequestBody Transfers transfer) {
 		transfersDAO.sendTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+	}
+	
+	@PreAuthorize("permitAll()")
+	@RequestMapping(path = "", method = RequestMethod.GET)
+	public String test() {
+		return "This is a test";
 	}
 	
 }

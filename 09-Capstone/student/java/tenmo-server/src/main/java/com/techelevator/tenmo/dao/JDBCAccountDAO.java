@@ -12,8 +12,13 @@ public class JDBCAccountDAO implements AccountDAO {
 	private JdbcTemplate jdbcTemplate;
 	private Account account;
 	
-	public JDBCAccountDAO() {
-		this.jdbcTemplate = new JdbcTemplate();
+	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+	
+	public JDBCAccountDAO(JdbcTemplate jdbcTemplate, Account account) {
+		this.account = account;
+		this.jdbcTemplate = jdbcTemplate;
 	}
 	
 	@Override

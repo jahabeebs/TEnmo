@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.tenmo.dao.AccountDAO;
+import com.techelevator.tenmo.dao.JDBCAccountDAO;
 import com.techelevator.tenmo.dao.TransfersDAO;
 import com.techelevator.tenmo.model.Account;
 
@@ -19,9 +20,9 @@ public class AccountController {
 
 	private AccountDAO accountDAO;
 	
-	public AccountController(AccountDAO accountDAO) {
-		this.accountDAO = accountDAO;
-	}
+//	public AccountController() {
+//		this.accountDAO = new JDBCAccountDAO();
+//	}
 	
 	//Need to be under /account?
 	@RequestMapping(path = "/balance/{id}", method = RequestMethod.GET)

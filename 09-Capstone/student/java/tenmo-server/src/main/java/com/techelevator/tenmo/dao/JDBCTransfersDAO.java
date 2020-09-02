@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -17,9 +19,10 @@ public class JDBCTransfersDAO implements TransfersDAO {
 
 	private JdbcTemplate jdbcTemplate;
 	private AccountDAO accountDAO;
+	private DataSource ds;
 	
-	public JDBCTransfersDAO() {
-		this.jdbcTemplate = new JdbcTemplate();
+	public JDBCTransfersDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
@@ -88,9 +91,9 @@ public class JDBCTransfersDAO implements TransfersDAO {
 	public void sendTransfer(int userFrom, int userTo, BigDecimal amount) {
 		Account from = accountDAO.findUserById(userFrom);
 		Account to = accountDAO.findUserById(userTo);
-		JDBCAccountDAO fromDAO = new JDBCAccountDAO();
+		JDBCAccountDAO fromDAO = new JDBCAccountDAO(jdbcTemplate, from);
 		fromDAO.subtractFromBalance(amount);
-		JDBCAccountDAO toDAO = new JDBCAccountDAO();
+		JDBCAccountDAO toDAO = new JDBCAccountDAO(jdbcTemplate, to);
 		toDAO.addToBalance(amount);
 		String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
 				"VALUES (2, 2, ?, ?, ?)";
