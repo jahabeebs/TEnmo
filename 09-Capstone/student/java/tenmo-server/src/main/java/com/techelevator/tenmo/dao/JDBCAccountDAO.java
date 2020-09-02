@@ -12,7 +12,7 @@ public class JDBCAccountDAO implements AccountDAO {
 	private JdbcTemplate jdbcTemplate;
 	private Account account;
 	
-	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
+	public JDBCAccountDAO() {
 		this.jdbcTemplate = new JdbcTemplate();
 	}
 	

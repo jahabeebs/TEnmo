@@ -88,9 +88,9 @@ public class JDBCTransfersDAO implements TransfersDAO {
 	public void sendTransfer(int userFrom, int userTo, BigDecimal amount) {
 		Account from = accountDAO.findUserById(userFrom);
 		Account to = accountDAO.findUserById(userTo);
-		JDBCAccountDAO fromDAO = new JDBCAccountDAO(from);
+		JDBCAccountDAO fromDAO = new JDBCAccountDAO();
 		fromDAO.subtractFromBalance(amount);
-		JDBCAccountDAO toDAO = new JDBCAccountDAO(to);
+		JDBCAccountDAO toDAO = new JDBCAccountDAO();
 		toDAO.addToBalance(amount);
 		String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
 				"VALUES (2, 2, ?, ?, ?)";
