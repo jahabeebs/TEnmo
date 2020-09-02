@@ -12,11 +12,11 @@ public class JDBCAccountDAO implements AccountDAO {
 	private JdbcTemplate jdbcTemplate;
 	private Account account;
 	
-	public JDBCAccountDAO(JdbcTemplate jdbcTemplate, Account account) {
-		this.jdbcTemplate = jdbcTemplate;
+	public JDBCAccountDAO(Account account) {
+		this.jdbcTemplate = new JdbcTemplate();
 		this.account = account;
-		
 	}
+	
 	
 	@Override
 	public BigDecimal getBalance(int userId) {
@@ -36,7 +36,7 @@ public class JDBCAccountDAO implements AccountDAO {
 	public BigDecimal addToBalance(BigDecimal amountToAdd) {
 		String sqlString = "UPDATE accounts SET balance = ? WHERE user_id = ?";
 		try {
-			jdbcTemplate.update(sqlString, account.getBalance(), account.getUserId());
+			jdbcTemplate.update(sqlString, account.getBalance().add(amountToAdd), account.getUserId());
 		} catch (DataAccessException e) {
 			System.out.println("Error accessing data");
 		}
@@ -49,7 +49,7 @@ public class JDBCAccountDAO implements AccountDAO {
 	public BigDecimal subtractFromBalance(BigDecimal amountToSubtract) {
 		String sqlString = "UPDATE accounts SET balance = ? WHERE user_id = ?";
 		try {
-			jdbcTemplate.update(sqlString, account.getBalance(), account.getUserId());
+			jdbcTemplate.update(sqlString, account.getBalance().subtract(amountToSubtract), account.getUserId());
 		} catch (DataAccessException e) {
 			System.out.println("Error accessing data");
 		}
