@@ -1,17 +1,20 @@
 package com.techelevator.tenmo.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfers;
 
 public class JDBCTransfersDAO implements TransfersDAO {
 
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
+	private AccountDAO accountDAO;
 	
 	public JDBCTransfersDAO() {
 		this.jdbcTemplate = new JdbcTemplate();
@@ -79,6 +82,19 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		return transfer;
 	}
 
+	@Override
+	public void sendTransfer(int userFrom, int userTo, BigDecimal amount) {
+		Account from = accountDAO.findUserById(userFrom);
+		Account to = accountDAO.findUserById(userTo);
+		JDBCAccountDAO fromDAO = new JDBCAccountDAO(from);
+		fromDAO.subtractFromBalance(amount);
+		JDBCAccountDAO toDAO = new JDBCAccountDAO(to);
+		toDAO.addToBalance(amount);
+		String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
+				"VALUES (2, 2, ?, ?, ?)";
+		jdbcTemplate.update(sql, from.getAccountId(), to.getAccountId(), amount);
+	}
+	
 	private Transfers mapRowToTransfer(SqlRowSet results) {
 		Transfers transfer = new Transfers();
 		transfer.setTransferId(results.getInt("transfer_id"));
