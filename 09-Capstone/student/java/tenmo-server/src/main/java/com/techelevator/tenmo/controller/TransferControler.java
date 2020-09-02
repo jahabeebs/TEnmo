@@ -29,19 +29,19 @@ public class TransferControler {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
 	}
 	
-	@RequestMapping(path = "/account/transfers/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "account/transfers/{id}", method = RequestMethod.GET)
 	private List<Transfers> getAllMyTransfers(@PathVariable int id) {
 		List<Transfers> output = transfersDAO.getAllTransfers(id);
 		return output;
 	}
 	
-	@RequestMapping(path = "/transfers/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
 	public Transfers getSelectedTransfer(@PathVariable int id) {
 		Transfers transfer = transfersDAO.getTransferById(id);
 		return transfer;
 	}
 	
-	@RequestMapping(path = "/transfers", method = RequestMethod.POST)
+	@RequestMapping(path = "transfers", method = RequestMethod.POST)
 	public void sendTransferRequest(@RequestBody Transfers transfer) {
 		transfersDAO.sendTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
 	}
