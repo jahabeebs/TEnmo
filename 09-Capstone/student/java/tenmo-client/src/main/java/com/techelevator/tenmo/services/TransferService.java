@@ -52,8 +52,6 @@ public class TransferService {
 		return user;
 	}
 	
-	
-	
 	private HttpEntity<Transfers> makeTransferEntity(Transfers transfer) {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.APPLICATION_JSON);
