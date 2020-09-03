@@ -3,9 +3,11 @@ package com.techelevator.tenmo.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.sql.DataSource;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -55,6 +57,7 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		}
 		System.out.print("-------------------------------------------\r\n" + 
 		"Please enter transfer ID to view details (0 to cancel): ");
+//		getChoice(list);
 		return list;
 	}
 
@@ -78,7 +81,7 @@ public class JDBCTransfersDAO implements TransfersDAO {
 				" Id: " + transfer.getTransferId() + "\r\n" + 
 				" From: " + results.getString("userFrom") + "\r\n" + 
 				" To: " + results.getString("userTo") + "\r\n" + 
-				" Type: " + results.getShort("transfer_type_desc") + "\r\n" + 
+				" Type: " + results.getString("transfer_type_desc") + "\r\n" + 
 				" Status: " + results.getString("transfer_status_desc") + "\r\n" + 
 				" Amount: $" + transfer.getAmount());
 		} else {
@@ -111,4 +114,24 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		return transfer;
 	}
 
+	public int getChoice(List<Transfers> list) {
+		Scanner scanner = new Scanner(System.in);
+		String input = scanner.nextLine();
+		if (Integer.parseInt(input) != 0) {
+			boolean foundTransferId = false;
+			for (Transfers i : list) {
+				if (Integer.parseInt(input) == i.getTransferId()) {
+					getTransferById(i.getTransferId());	
+					foundTransferId = true;
+				}
+			}
+			if (!foundTransferId) {
+				System.out.println("Not a valid transfer ID");
+				getChoice(list);
+			} else {
+				return Integer.parseInt(input);
+			}
+		}
+		return 0;
+	}
 }
