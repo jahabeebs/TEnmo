@@ -23,10 +23,9 @@ public class TransferService {
 		BASE_URL = url;
 	}
 	
-	public List<?> transfersList() {
-		return restTemplate.getForObject(BASE_URL + "account/transfers/" + currentUser.getUser().getId(), List.class);
-//		List<Transfers> output = restTemplate.exchange(BASE_URL + "account/transfers/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), List.class).getBody();
-//		return output;
+	public List<Transfers> transfersList() {
+		List<Transfers> output = restTemplate.exchange(BASE_URL + "account/transfers/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), List.class).getBody();
+		return output;
 	}
 	
 
@@ -38,10 +37,10 @@ public class TransferService {
 	    return entity;
 	  }
 
-	  private HttpEntity<Object> makeAuthEntity() {
+	  private HttpEntity makeAuthEntity() {
 	    HttpHeaders headers = new HttpHeaders();
 	    headers.setBearerAuth(currentUser.getToken());
-	    HttpEntity<Object> entity = new HttpEntity<>(headers);
+	    HttpEntity entity = new HttpEntity<>(headers);
 	    return entity;
 	  }
 }
