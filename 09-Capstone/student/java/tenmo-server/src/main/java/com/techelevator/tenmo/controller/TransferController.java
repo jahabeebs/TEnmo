@@ -22,7 +22,7 @@ public class TransferController {
 	@Autowired
 	private TransfersDAO transfersDAO;
 	
-	@RequestMapping(value = "/account/transfers/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "account/transfers/{id}", method = RequestMethod.GET)
 	public List<Transfers> getAllMyTransfers(@PathVariable int id) {
 		System.out.println(transfersDAO);
 		List<Transfers> output = transfersDAO.getAllTransfers(id);
