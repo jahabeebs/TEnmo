@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Scanner;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,20 @@ public class TransferService {
 	
 	public List<Transfers> transfersList() {
 		List<Transfers> output = restTemplate.exchange(BASE_URL + "account/transfers/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), List.class).getBody();
+//		Scanner scanner = new Scanner(System.in);
+//		String input = scanner.nextLine();
+//		if (Integer.parseInt(input) != 0) {
+//			boolean foundTransferId = false;
+//			for (Transfers i : output) {
+//				if (Integer.parseInt(input) == i.getTransferId()) {
+//					restTemplate.exchange(BASE_URL + "transfers/" + i.getTransferId(), HttpMethod.GET, makeAuthEntity(), Transfers.class);					
+//					foundTransferId = true;
+//				}
+//			}
+//			if (!foundTransferId) {
+//				System.out.println("Not a valid transfer ID");
+//			}
+//		}
 		return output;
 	}
 
