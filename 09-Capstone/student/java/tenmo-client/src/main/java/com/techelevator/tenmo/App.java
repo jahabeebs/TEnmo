@@ -71,7 +71,11 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 
 	private void viewCurrentBalance() {
 		// TODO Auto-generated method stub
-		transferService.getBalance();
+		try {
+			System.out.println("Your current account balance is " + transferService.getBalance(currentUser));
+		} catch (NullPointerException e) {
+			System.out.println("No balance found");
+		}
 	}
 
 	private void viewTransferHistory() {

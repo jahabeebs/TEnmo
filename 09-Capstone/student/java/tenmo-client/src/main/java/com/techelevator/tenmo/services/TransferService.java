@@ -22,6 +22,7 @@ public class TransferService {
 	private String BASE_URL;
 	private RestTemplate restTemplate = new RestTemplate();
 	private AuthenticatedUser currentUser;
+	private String AUTH_TOKEN = "";
 	
 	public TransferService(String url, AuthenticatedUser currentUser) {
 		this.currentUser = currentUser;
@@ -47,10 +48,11 @@ public class TransferService {
 		return output;
 	}
 
-	public BigDecimal getBalance() {
+	public BigDecimal getBalance(AuthenticatedUser user) {
+		AUTH_TOKEN = user.getToken();
 		Account account = new Account();
 		try {
-			account = restTemplate.exchange(BASE_URL + "/balance", HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
+			account = restTemplate.exchange(BASE_URL + "/balance", HttpMethod.GET, makeAccountEntity(user), Account.class).getBody();
 		} catch (RestClientException e) {
 			System.out.println("Error getting balance");
 		}
@@ -81,4 +83,12 @@ public class TransferService {
 	    HttpEntity entity = new HttpEntity<>(headers);
 	    return entity;
 	  }
+	  
+	  private HttpEntity<AuthenticatedUser> makeAccountEntity(AuthenticatedUser user) {
+		    HttpHeaders headers = new HttpHeaders();
+		    headers.setContentType(MediaType.APPLICATION_JSON);
+		    headers.setBearerAuth(currentUser.getToken());
+		    HttpEntity<AuthenticatedUser> entity = new HttpEntity<>(user, headers);
+		    return entity;
+		  }
 }
