@@ -19,7 +19,7 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfers;
 import com.techelevator.tenmo.model.User;
 
-@PreAuthorize("isAuthorized()")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class AccountController {
 

@@ -32,6 +32,7 @@ public class JDBCAccountDAO implements AccountDAO {
 	} catch (DataAccessException e) {
 		System.out.println("Error accessing data");
 	}
+	System.out.println("Your account balance is: " + account.getBalance());
 	return balance;
 	}
 
