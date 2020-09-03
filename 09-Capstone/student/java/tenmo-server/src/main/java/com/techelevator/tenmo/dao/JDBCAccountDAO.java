@@ -5,12 +5,15 @@ import java.math.BigDecimal;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.techelevator.tenmo.model.Account;
 
+@Service 
 public class JDBCAccountDAO implements AccountDAO {
 	private JdbcTemplate jdbcTemplate;
-	private Account account;
+	private Account account = new Account();
 	
 	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;

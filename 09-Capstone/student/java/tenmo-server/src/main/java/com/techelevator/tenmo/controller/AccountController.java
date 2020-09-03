@@ -3,7 +3,10 @@ package com.techelevator.tenmo.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,21 +22,28 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfers;
 import com.techelevator.tenmo.model.User;
 
-@PreAuthorize("isAuthenticated()")
 @RestController
+@PreAuthorize("isAuthenticated()")
 public class AccountController {
 
 	private AccountDAO accountDAO;
 	private UserDAO userDAO;
-//	private TransfersDAO transfersDAO;
+	private TransfersDAO transfersDAO;
 	
+	public AccountController(AccountDAO accountDAO, UserDAO userDAO, TransfersDAO transfersDAO) {
+		this.accountDAO = accountDAO;
+		this.userDAO = userDAO;
+		this.transfersDAO = transfersDAO;
+	}
 	
 	@RequestMapping(path = "balance/{id}", method = RequestMethod.GET)
 	public BigDecimal getBalance(@PathVariable int id) {
+		System.out.println(accountDAO);
 		BigDecimal balance = accountDAO.getBalance(id);
 		return balance;
 	}
 	
+
 	@RequestMapping(path = "/listusers", method = RequestMethod.GET)
 	public List <User> listUsers() {
 		List <User> users = userDAO.findAll();

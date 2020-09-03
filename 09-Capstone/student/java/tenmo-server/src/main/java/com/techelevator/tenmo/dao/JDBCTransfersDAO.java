@@ -3,11 +3,6 @@ package com.techelevator.tenmo.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import javax.sql.DataSource;
-
-import org.springframework.http.HttpMethod;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -21,7 +16,7 @@ public class JDBCTransfersDAO implements TransfersDAO {
 
 	private JdbcTemplate jdbcTemplate;
 	private AccountDAO accountDAO;
-	private DataSource ds;
+
 	
 	public JDBCTransfersDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -90,34 +85,8 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		try {
 			transfer.setTransferType(results.getString("transfer_type_desc"));
 			transfer.setTransferStatus(results.getString("transfer_status_desc"));			
-		} catch (Exception e) {
-			
-		}
+		} catch (Exception e) {}
 		return transfer;
 	}
 
-	private Transfers mapTransferInfo(SqlRowSet results, Transfers transfer) {
-		return transfer;
-	}
-
-//	public int getChoice(List<Transfers> list) {
-//		Scanner scanner = new Scanner(System.in);
-//		String input = scanner.nextLine();
-//		if (Integer.parseInt(input) != 0) {
-//			boolean foundTransferId = false;
-//			for (Transfers i : list) {
-//				if (Integer.parseInt(input) == i.getTransferId()) {
-//					getTransferById(i.getTransferId());	
-//					foundTransferId = true;
-//				}
-//			}
-//			if (!foundTransferId) {
-//				System.out.println("Not a valid transfer ID");
-//				getChoice(list);
-//			} else {
-//				return Integer.parseInt(input);
-//			}
-//		}
-//		return 0;
-//	}
 }

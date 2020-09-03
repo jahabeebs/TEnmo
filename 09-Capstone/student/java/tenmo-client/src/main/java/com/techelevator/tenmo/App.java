@@ -70,9 +70,9 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
+		TransferService ts = new TransferService(API_BASE_URL, currentUser);
 		try {
-			System.out.println("Your current account balance is " + transferService.getBalance(currentUser));
+			System.out.println("Your current account balance is " + ts.getBalance(currentUser));
 		} catch (NullPointerException e) {
 			System.out.println("No balance found");
 		}
@@ -89,8 +89,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
-		
+		TransferService ts = new TransferService(API_BASE_URL, currentUser);
+		ts.sendBucks();
 	}
 
 	private void requestBucks() {

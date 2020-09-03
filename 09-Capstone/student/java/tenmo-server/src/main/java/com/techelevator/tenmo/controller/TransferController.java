@@ -24,7 +24,6 @@ public class TransferController {
 	
 	@RequestMapping(value = "account/transfers/{id}", method = RequestMethod.GET)
 	public List<Transfers> getAllMyTransfers(@PathVariable int id) {
-		System.out.println(transfersDAO);
 		List<Transfers> output = transfersDAO.getAllTransfers(id);
 		return output;
 	}
