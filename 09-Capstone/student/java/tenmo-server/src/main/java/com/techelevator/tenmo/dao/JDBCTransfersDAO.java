@@ -37,27 +37,10 @@ public class JDBCTransfersDAO implements TransfersDAO {
 				"JOIN users v ON b.user_id = v.user_id\r\n" + 
 				"WHERE a.user_id = ? OR b.user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
-		System.out.println("-------------------------------------------\r\n" + 
-				"Transfers\r\n" + 
-				"ID          From/To                 Amount\r\n" + 
-				"-------------------------------------------\r\n"); 
 		while (results.next() ) {
 			Transfers transfer = mapRowToTransfer(results);
 			list.add(transfer);
-			String fromOrTo = "";
-			String name = "";
-			if (userId == results.getInt("fromUserId")) {
-				fromOrTo = "From: ";
-				name = results.getString("userTo");
-			} else {
-				fromOrTo = "To: ";
-				name = results.getString("userFrom");
-			}
-			System.out.println(transfer.getTransferId() +"\t\t" + fromOrTo + name + "\t\t$" + transfer.getAmount());
 		}
-		System.out.print("-------------------------------------------\r\n" + 
-		"Please enter transfer ID to view details (0 to cancel): ");
-//		getChoice(list);
 		return list;
 	}
 
@@ -111,27 +94,31 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		transfer.setAccountFrom(results.getInt("account_From"));
 		transfer.setAccountTo(results.getInt("account_to"));
 		transfer.setAmount(results.getBigDecimal("amount"));
+		transfer.setTransferType(results.getString("transfer_type_desc"));
+		transfer.setTransferStatus(results.getString("transfer_status_desc"));
+		transfer.setUserFrom(results.getString("userFrom"));
+		transfer.setUserTo(results.getString("userTo"));
 		return transfer;
 	}
 
-	public int getChoice(List<Transfers> list) {
-		Scanner scanner = new Scanner(System.in);
-		String input = scanner.nextLine();
-		if (Integer.parseInt(input) != 0) {
-			boolean foundTransferId = false;
-			for (Transfers i : list) {
-				if (Integer.parseInt(input) == i.getTransferId()) {
-					getTransferById(i.getTransferId());	
-					foundTransferId = true;
-				}
-			}
-			if (!foundTransferId) {
-				System.out.println("Not a valid transfer ID");
-				getChoice(list);
-			} else {
-				return Integer.parseInt(input);
-			}
-		}
-		return 0;
-	}
+//	public int getChoice(List<Transfers> list) {
+//		Scanner scanner = new Scanner(System.in);
+//		String input = scanner.nextLine();
+//		if (Integer.parseInt(input) != 0) {
+//			boolean foundTransferId = false;
+//			for (Transfers i : list) {
+//				if (Integer.parseInt(input) == i.getTransferId()) {
+//					getTransferById(i.getTransferId());	
+//					foundTransferId = true;
+//				}
+//			}
+//			if (!foundTransferId) {
+//				System.out.println("Not a valid transfer ID");
+//				getChoice(list);
+//			} else {
+//				return Integer.parseInt(input);
+//			}
+//		}
+//		return 0;
+//	}
 }
