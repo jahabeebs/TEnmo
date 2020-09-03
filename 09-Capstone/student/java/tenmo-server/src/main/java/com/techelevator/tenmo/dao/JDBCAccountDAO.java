@@ -28,7 +28,9 @@ public class JDBCAccountDAO implements AccountDAO {
 		BigDecimal balance = null;
 	try {
 		results = jdbcTemplate.queryForRowSet(sqlString, userId);
+		if (results.next()) {
 		balance = results.getBigDecimal("balance");
+		}
 	} catch (DataAccessException e) {
 		System.out.println("Error accessing data");
 	}
