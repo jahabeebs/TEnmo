@@ -46,10 +46,10 @@ public class JDBCTransfersDAO implements TransfersDAO {
 			String name = "";
 			if (userId == results.getInt("fromUserId")) {
 				fromOrTo = "From: ";
-				name = results.getString("userFrom");
+				name = results.getString("userTo");
 			} else {
 				fromOrTo = "To: ";
-				name = results.getString("userTo");
+				name = results.getString("userFrom");
 			}
 			System.out.println(transfer.getTransferId() +"\t\t" + fromOrTo + name + "\t\t$" + transfer.getAmount());
 		}
