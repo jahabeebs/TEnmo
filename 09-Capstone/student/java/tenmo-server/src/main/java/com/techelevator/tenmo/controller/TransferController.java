@@ -17,7 +17,7 @@ import com.techelevator.tenmo.security.jwt.TokenProvider;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
-public class TransferControler {
+public class TransferController {
 
 	@Autowired
 	private TransfersDAO transfersDAO;
