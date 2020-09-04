@@ -41,11 +41,10 @@ public class AccountController {
 	@RequestMapping(path = "balance/{id}", method = RequestMethod.GET)
 	public BigDecimal getBalance(@PathVariable int id) {
 		BigDecimal balance = accountDAO.getBalance(id);
-		System.out.println(balance);
 		return balance;
 	}
 	
-	@RequestMapping(path = "/listusers", method = RequestMethod.GET)
+	@RequestMapping(path = "listusers", method = RequestMethod.GET)
 	public List <User> listUsers() {
 		List <User> users = userDAO.findAll();
 		return users;

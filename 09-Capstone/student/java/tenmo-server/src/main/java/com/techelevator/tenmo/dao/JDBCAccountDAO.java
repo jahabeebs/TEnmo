@@ -16,16 +16,10 @@ public class JDBCAccountDAO implements AccountDAO {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	private Account account = new Account();
 	
 	public JDBCAccountDAO() {}
 	
 	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-	
-	public JDBCAccountDAO(JdbcTemplate jdbcTemplate, Account account) {
-		this.account = account;
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
@@ -42,39 +36,40 @@ public class JDBCAccountDAO implements AccountDAO {
 	} catch (DataAccessException e) {
 		System.out.println("Error accessing data");
 	}
-	System.out.println("Your account balance is: " + account.getBalance());
 	return balance;
 	}
 
 	@Override
-	public BigDecimal addToBalance(BigDecimal amountToAdd) {
+	public BigDecimal addToBalance(BigDecimal amountToAdd, int id) {
+		Account account = findAccountById(id);
+		BigDecimal newBalance = account.getBalance().add(amountToAdd);
+		System.out.println(newBalance);
 		String sqlString = "UPDATE accounts SET balance = ? WHERE user_id = ?";
 		try {
-			jdbcTemplate.update(sqlString, account.getBalance().add(amountToAdd), account.getUserId());
+			jdbcTemplate.update(sqlString, newBalance, id);
 		} catch (DataAccessException e) {
 			System.out.println("Error accessing data");
 		}
-		account.setBalance(account.getBalance().add(amountToAdd));
-		System.out.println("Your new account balance is: " + account.getBalance());
 		return account.getBalance();
 	}
 
 	@Override
-	public BigDecimal subtractFromBalance(BigDecimal amountToSubtract) {
+	public BigDecimal subtractFromBalance(BigDecimal amountToSubtract, int id) {
+		Account account = findAccountById(id);
+		BigDecimal newBalance = account.getBalance().subtract(amountToSubtract);
 		String sqlString = "UPDATE accounts SET balance = ? WHERE user_id = ?";
 		try {
-			jdbcTemplate.update(sqlString, account.getBalance().subtract(amountToSubtract), account.getUserId());
+			jdbcTemplate.update(sqlString, newBalance, id);
 		} catch (DataAccessException e) {
 			System.out.println("Error accessing data");
 		}
-		account.setBalance(account.getBalance().subtract(amountToSubtract));
-		System.out.println("Your new account balance is: " + account.getBalance());
 		return account.getBalance();
 	}
 
 	@Override
 	public Account findUserById(int userId) {
 		String sqlString = "SELECT * FROM accounts WHERE user_id = ?";
+		Account account = null;
 		try {
 			SqlRowSet result = jdbcTemplate.queryForRowSet(sqlString, userId);
 			account = mapRowToAccount(result);
@@ -84,7 +79,18 @@ public class JDBCAccountDAO implements AccountDAO {
 		return account;
 	}
 
+	public Account findAccountById(int id) {
+		Account account = null;
+		String sql = "SELECT * FROM accounts WHERE account_id = ?";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+		if (results.next()) {
+			account = mapRowToAccount(results);
+		}
+		return account;
+	}
+	
 	private Account mapRowToAccount(SqlRowSet result) {
+		Account account = new Account();
 		account.setBalance(result.getBigDecimal("balance"));
 		account.setAccountId(result.getInt("account_id"));
 		account.setUserId(result.getInt("user_id"));

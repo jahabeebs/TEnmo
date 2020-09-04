@@ -34,7 +34,7 @@ public class TransferController {
 		return transfer;
 	}
 	
-	@RequestMapping(path = "transfers", method = RequestMethod.POST)
+	@RequestMapping(path = "transfer", method = RequestMethod.POST)
 	public void sendTransferRequest(@RequestBody Transfers transfer) {
 		transfersDAO.sendTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
 	}

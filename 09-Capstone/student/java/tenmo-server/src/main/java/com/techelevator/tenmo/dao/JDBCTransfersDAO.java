@@ -3,6 +3,8 @@ package com.techelevator.tenmo.dao;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import com.techelevator.tenmo.model.Transfers;
 public class JDBCTransfersDAO implements TransfersDAO {
 
 	private JdbcTemplate jdbcTemplate;
+	@Autowired
 	private AccountDAO accountDAO;
 
 	
@@ -61,15 +64,11 @@ public class JDBCTransfersDAO implements TransfersDAO {
 
 	@Override
 	public void sendTransfer(int userFrom, int userTo, BigDecimal amount) {
-		Account from = accountDAO.findUserById(userFrom);
-		Account to = accountDAO.findUserById(userTo);
-		JDBCAccountDAO fromDAO = new JDBCAccountDAO(jdbcTemplate, from);
-		fromDAO.subtractFromBalance(amount);
-		JDBCAccountDAO toDAO = new JDBCAccountDAO(jdbcTemplate, to);
-		toDAO.addToBalance(amount);
 		String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
 				"VALUES (2, 2, ?, ?, ?)";
-		jdbcTemplate.update(sql, from.getAccountId(), to.getAccountId(), amount);
+		jdbcTemplate.update(sql, userFrom, userTo, amount);
+		accountDAO.addToBalance(amount, userTo);
+		accountDAO.subtractFromBalance(amount, userFrom);
 	}
 	
 	private Transfers mapRowToTransfer(SqlRowSet results) {
