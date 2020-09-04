@@ -26,8 +26,11 @@ import com.techelevator.tenmo.model.User;
 @PreAuthorize("isAuthenticated()")
 public class AccountController {
 
+	@Autowired
 	private AccountDAO accountDAO;
+	@Autowired
 	private UserDAO userDAO;
+	@Autowired
 	private TransfersDAO transfersDAO;
 	
 	public AccountController(AccountDAO accountDAO, UserDAO userDAO, TransfersDAO transfersDAO) {

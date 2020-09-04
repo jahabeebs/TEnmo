@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -12,8 +13,12 @@ import com.techelevator.tenmo.model.Account;
 
 @Service 
 public class JDBCAccountDAO implements AccountDAO {
+	
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	private Account account = new Account();
+	
+	public JDBCAccountDAO() {}
 	
 	public JDBCAccountDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
