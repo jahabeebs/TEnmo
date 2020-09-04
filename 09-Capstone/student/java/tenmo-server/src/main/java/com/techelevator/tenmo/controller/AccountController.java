@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import com.techelevator.tenmo.model.User;
 @PreAuthorize("isAuthenticated()")
 @RestController
 public class AccountController {
-
+	
 	private AccountDAO accountDAO;
 	private UserDAO userDAO;
 //	private TransfersDAO transfersDAO;
@@ -34,7 +35,7 @@ public class AccountController {
 		return balance;
 	}
 	
-	@RequestMapping(path = "/listusers", method = RequestMethod.GET)
+	@RequestMapping(path = "listusers/", method = RequestMethod.GET)
 	public List <User> listUsers() {
 		List <User> users = userDAO.findAll();
 		return users;

@@ -87,9 +87,9 @@ public class TransferService {
 	public User[] getUsers() {
 		User[] user = null;
 		try {
-			user = restTemplate.exchange(BASE_URL + "/listusers", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+			user = restTemplate.exchange(BASE_URL + "listusers/", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
 		} catch (RestClientResponseException e) {
-			System.out.println("Error gettng users");
+			System.out.println("Error getting users");
 		}
 		return user;
 	}
