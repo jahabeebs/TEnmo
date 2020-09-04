@@ -109,17 +109,6 @@ public class TransferService {
 			System.out.println(output);			
 		}
 	}
-
-	public BigDecimal getBalance() {
-		BigDecimal balance = new BigDecimal(0);
-		try {
-			balance = restTemplate.exchange(BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
-			System.out.println("Your current account balance is: $" + balance);
-		} catch (RestClientException e) {
-			System.out.println("Error getting balance");
-		}
-		return balance;
-	}
 	
 	public User[] getUsers() {
 		User[] user = null;

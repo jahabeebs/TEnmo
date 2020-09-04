@@ -78,7 +78,8 @@ public class JDBCAccountDAO implements AccountDAO {
 		}
 		return account;
 	}
-
+	
+	@Override
 	public Account findAccountById(int id) {
 		Account account = null;
 		String sql = "SELECT * FROM accounts WHERE account_id = ?";
