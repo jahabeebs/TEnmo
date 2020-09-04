@@ -98,10 +98,16 @@ public class TransferService {
 				"Enter ID of user you are sending to (0 to cancel): ");
 		transfer.setAccountTo(Integer.parseInt(scanner.nextLine()));
 		transfer.setAccountFrom(currentUser.getUser().getId());
+		if (transfer.getAccountTo() != 0) {
 		System.out.print("Enter amount: ");
-		transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));
-		String output = restTemplate.exchange(BASE_URL + "transfer", HttpMethod.POST, makeTransferEntity(transfer), String.class).getBody();
-		System.out.println(output);
+		try {
+			transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));			
+		} catch (NumberFormatException e) {
+			System.out.println("Error when entering amount");
+		}
+			String output = restTemplate.exchange(BASE_URL + "transfer", HttpMethod.POST, makeTransferEntity(transfer), String.class).getBody();
+			System.out.println(output);			
+		}
 	}
 
 	public BigDecimal getBalance() {
