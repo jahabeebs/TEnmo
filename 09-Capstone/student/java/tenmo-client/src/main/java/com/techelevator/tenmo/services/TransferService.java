@@ -85,16 +85,15 @@ public class TransferService {
 //		restTemplate.exchange(BASE_URL + "transfers", HttpMethod.POST, makeTransferEntity(transfer));
 	}
 
-	public BigDecimal getBalance(AuthenticatedUser user) {
-		AUTH_TOKEN = user.getToken();
-		Account account = new Account();
-//		try {
-			account = restTemplate.exchange(BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
-			System.out.println("Your current account balance is: $" + account.getBalance());
-//		} catch (RestClientException e) {
-//			System.out.println("Error getting balance");
-//		}
-		return account.getBalance();
+	public BigDecimal getBalance() {
+		BigDecimal balance = new BigDecimal(0);
+		try {
+			balance = restTemplate.exchange(BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), BigDecimal.class).getBody();
+			System.out.println("Your current account balance is: $" + balance);
+		} catch (RestClientException e) {
+			System.out.println("Error getting balance");
+		}
+		return balance;
 	}
 	
 	public User[] getUsers() {

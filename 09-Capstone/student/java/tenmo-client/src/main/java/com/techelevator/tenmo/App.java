@@ -72,7 +72,7 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	private void viewCurrentBalance() {
 		TransferService ts = new TransferService(API_BASE_URL, currentUser);
 		try {
-			System.out.println("Your current account balance is " + ts.getBalance(currentUser));
+			ts.getBalance();
 		} catch (NullPointerException e) {
 			System.out.println("No balance found");
 		}
