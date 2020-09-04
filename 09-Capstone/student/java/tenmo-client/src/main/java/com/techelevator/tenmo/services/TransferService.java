@@ -23,7 +23,6 @@ public class TransferService {
 	private String BASE_URL;
 	private RestTemplate restTemplate = new RestTemplate();
 	private AuthenticatedUser currentUser;
-	private String AUTH_TOKEN = "";
 	
 	public TransferService(String url, AuthenticatedUser currentUser) {
 		this.currentUser = currentUser;

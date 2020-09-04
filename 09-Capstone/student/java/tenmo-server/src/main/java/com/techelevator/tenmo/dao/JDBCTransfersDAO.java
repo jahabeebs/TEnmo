@@ -75,7 +75,7 @@ public class JDBCTransfersDAO implements TransfersDAO {
 	private Transfers mapRowToTransfer(SqlRowSet results) {
 		Transfers transfer = new Transfers();
 		transfer.setTransferId(results.getInt("transfer_id"));
-		transfer.setTransferTyepId(results.getInt("transfer_type_id"));
+		transfer.setTransferTypeId(results.getInt("transfer_type_id"));
 		transfer.setTransferStatusId(results.getInt("transfer_status_id"));
 		transfer.setAccountFrom(results.getInt("account_From"));
 		transfer.setAccountTo(results.getInt("account_to"));
