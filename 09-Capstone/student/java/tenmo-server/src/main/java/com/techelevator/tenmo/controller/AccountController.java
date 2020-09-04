@@ -1,10 +1,9 @@
 package com.techelevator.tenmo.controller;
 
-import java.math.BigDecimal;
+import java.math.BigDecimal; 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +45,6 @@ public class AccountController {
 		return balance;
 	}
 	
-
 	@RequestMapping(path = "/listusers", method = RequestMethod.GET)
 	public List <User> listUsers() {
 		List <User> users = userDAO.findAll();

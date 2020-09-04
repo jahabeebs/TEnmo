@@ -105,7 +105,7 @@ public class TransferService {
 				System.out.println(i);
 			}
 		} catch (RestClientResponseException e) {
-			System.out.println("Error gettng users");
+			System.out.println("Error getting users");
 		}
 		return user;
 	}
