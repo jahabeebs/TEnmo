@@ -10,5 +10,8 @@ public interface TransfersDAO {
 	public List<Transfers> getAllTransfers(int userId);
 	public Transfers getTransferById(int transactionId);
 	public String sendTransfer(int userFrom, int userTo, BigDecimal amount);
+	public String requestTransfer(int userFrom, int userTo, BigDecimal amount);
+	public List<Transfers> getPendingRequests(int userId);
+	public String updateTransferRequest(Transfers transfer, int statusId);
 	
 }

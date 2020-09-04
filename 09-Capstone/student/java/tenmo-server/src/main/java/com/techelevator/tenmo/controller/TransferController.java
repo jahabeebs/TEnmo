@@ -36,8 +36,26 @@ public class TransferController {
 	
 	@RequestMapping(path = "transfer", method = RequestMethod.POST)
 	public String sendTransferRequest(@RequestBody Transfers transfer) {
-		String results =transfersDAO.sendTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+		String results = transfersDAO.sendTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
 		return results;
+	}
+	
+	@RequestMapping(path = "request", method = RequestMethod.POST)
+	public String requestTransferRequest(@RequestBody Transfers transfer) {
+		String results = transfersDAO.requestTransfer(transfer.getAccountFrom(), transfer.getAccountTo(), transfer.getAmount());
+		return results;
+	}
+	
+	@RequestMapping(value = "request/{id}", method = RequestMethod.GET)
+	public List<Transfers> getAllTransferRequests(@PathVariable int id) {
+		List<Transfers> output = transfersDAO.getPendingRequests(id);
+		return output;
+	}
+	
+	@RequestMapping(path = "transfer/status/{statusId}", method = RequestMethod.PUT)
+	public String updateReuest(@RequestBody Transfers transfer, @PathVariable int statusId) {
+		String output = transfersDAO.updateTransferRequest(transfer, statusId);
+		return output;
 	}
 	
 }

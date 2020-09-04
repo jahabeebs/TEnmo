@@ -85,8 +85,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
+		TransferService ts = new TransferService(API_BASE_URL, currentUser);
+		ts.transfersRequestList();
 	}
 
 	private void sendBucks() {
@@ -95,8 +95,8 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 	}
 
 	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
+		TransferService ts = new TransferService(API_BASE_URL, currentUser);
+		ts.requestBucks();
 	}
 	
 	private void exitProgram() {

@@ -16,14 +16,10 @@ import com.techelevator.tenmo.model.Transfers;
 @Component
 public class JDBCTransfersDAO implements TransfersDAO {
 
+	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private AccountDAO accountDAO;
-
-	
-	public JDBCTransfersDAO(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
 
 	@Override
 	public List<Transfers> getAllTransfers(int userId) {
@@ -79,6 +75,56 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		}
 	}
 	
+	@Override
+	public String requestTransfer(int userFrom, int userTo, BigDecimal amount) {
+		if (userFrom == userTo) {
+			return "You can not request money from your self.";
+		}
+		if (amount.compareTo(new BigDecimal(0)) == 1) {
+			String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
+					"VALUES (1, 1, ?, ?, ?)";
+			jdbcTemplate.update(sql, userFrom, userTo, amount);
+			return "Request sent";
+		} else {
+			return "There was a problem sending the request";			
+		}
+	}
+	
+	@Override
+	public List<Transfers> getPendingRequests(int userId) {
+		List<Transfers> output = new ArrayList<>();
+		String sql = "SELECT t.*, u.username AS userFrom, v.username AS userTo FROM transfers t " + 
+				"JOIN accounts a ON t.account_from = a.account_id " + 
+				"JOIN accounts b ON t.account_to = b.account_id " + 
+				"JOIN users u ON a.user_id = u.user_id " + 
+				"JOIN users v ON b.user_id = v.user_id " + 
+				"WHERE transfer_status_id = 1 AND (account_from = ? OR account_to = ?)";
+		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
+		while (results.next()) {
+			Transfers transfer = mapRowToTransfer(results);
+			output.add(transfer);
+		}
+		return output;
+	}
+	
+	@Override
+	public String updateTransferRequest(Transfers transfer, int statusId) {
+		if (statusId == 3) {
+			String sql = "UPDATE transfers SET transfer_status_id = ? WHERE transfer_id = ?;";
+			jdbcTemplate.update(sql, statusId, transfer.getTransferId());
+			return "Update sucessful";	
+		}
+		if (!(accountDAO.getBalance(transfer.getAccountFrom()).compareTo(transfer.getAmount()) == -1)) {
+			String sql = "UPDATE transfers SET transfer_status_id = ? WHERE transfer_id = ?;";
+			jdbcTemplate.update(sql, statusId, transfer.getTransferId());
+			accountDAO.addToBalance(transfer.getAmount(), transfer.getAccountTo());
+			accountDAO.subtractFromBalance(transfer.getAmount(), transfer.getAccountFrom());
+			return "Update sucessful";			
+		} else {
+			return "Insafeshient funds for transfer";
+		}
+	}
+	
 	private Transfers mapRowToTransfer(SqlRowSet results) {
 		Transfers transfer = new Transfers();
 		transfer.setTransferId(results.getInt("transfer_id"));
@@ -87,13 +133,17 @@ public class JDBCTransfersDAO implements TransfersDAO {
 		transfer.setAccountFrom(results.getInt("account_From"));
 		transfer.setAccountTo(results.getInt("account_to"));
 		transfer.setAmount(results.getBigDecimal("amount"));
-		transfer.setUserFrom(results.getString("userFrom"));
-		transfer.setUserTo(results.getString("userTo"));
+		try {
+			transfer.setUserFrom(results.getString("userFrom"));
+			transfer.setUserTo(results.getString("userTo"));			
+		} catch (Exception e) {}
 		try {
 			transfer.setTransferType(results.getString("transfer_type_desc"));
 			transfer.setTransferStatus(results.getString("transfer_status_desc"));			
 		} catch (Exception e) {}
 		return transfer;
 	}
+
+
 
 }
