@@ -32,7 +32,7 @@ public class TransferService {
 	
 	public Transfers[] transfersList() {
 		Transfers [] output = null;
-//		try {
+		try {
 			output = restTemplate.exchange(BASE_URL + "account/transfers/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Transfers[].class).getBody();		
 			System.out.println("-------------------------------------------\r\n" + 
 					"Transfers\r\n" + 
@@ -48,7 +48,7 @@ public class TransferService {
 					fromOrTo = "To: ";
 					name = i.getUserFrom();
 				}
-				System.out.println(i.getTransferId() +"\t\t" + fromOrTo + name + "\t$" + i.getAmount());
+				System.out.println(i.getTransferId() +"\t\t" + fromOrTo + name + "\t\t$" + i.getAmount());
 			}
 			System.out.print("-------------------------------------------\r\n" + 
 					"Please enter transfer ID to view details (0 to cancel): ");
@@ -60,34 +60,50 @@ public class TransferService {
 					if (Integer.parseInt(input) == i.getTransferId()) {
 						restTemplate.exchange(BASE_URL + "transfers/" + i.getTransferId(), HttpMethod.GET, makeAuthEntity(), Transfers.class);
 						foundTransferId = true;
+						System.out.println("--------------------------------------------\r\n" + 
+						"Transfer Details\r\n" +
+						"--------------------------------------------\r\n" + 
+						" Id: "+ i.getTransferId() + "\r\n" + 
+						" From: " + i.getUserFrom() + "\r\n" +
+						" To: " + i.getUserTo() + "\r\n" + 
+						" Type: " + i.getTransferType() + "\r\n" + 
+						" Status: " + i.getTransferStatus() + "\r\n" + 
+						" Amount: $" + i.getAmount());
 					}
 				}
 				if (!foundTransferId) {
 					System.out.println("Not a valid transfer ID");
 				} 
 			}
-//		} catch (Exception e) {
-//			System.out.println("Something went wrong... Opps! We have all your money now!");
-//		}
+		} catch (Exception e) {
+			System.out.println("Something went wrong... Opps! We have all your money now!");
+		}
 		return output;
+	}
+	
+	public void sendBucks() {
+//		restTemplate.exchange(BASE_URL + "transfers", HttpMethod.POST, makeTransferEntity(transfer));
 	}
 
 	public BigDecimal getBalance(AuthenticatedUser user) {
 		AUTH_TOKEN = user.getToken();
 		Account account = new Account();
-		try {
+//		try {
 			account = restTemplate.exchange(BASE_URL + "balance/" + currentUser.getUser().getId(), HttpMethod.GET, makeAuthEntity(), Account.class).getBody();
 			System.out.println("Your current account balance is: $" + account.getBalance());
-		} catch (RestClientException e) {
-			System.out.println("Error getting balance");
-		}
+//		} catch (RestClientException e) {
+//			System.out.println("Error getting balance");
+//		}
 		return account.getBalance();
 	}
 	
 	public User[] getUsers() {
 		User[] user = null;
 		try {
-			user = restTemplate.exchange(BASE_URL + "listusers/", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+			user = restTemplate.exchange(BASE_URL + "listusers", HttpMethod.GET, makeAuthEntity(), User[].class).getBody();
+			for (User i : user) {
+				System.out.println(i);
+			}
 		} catch (RestClientResponseException e) {
 			System.out.println("Error getting users");
 		}
