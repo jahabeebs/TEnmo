@@ -63,12 +63,20 @@ public class JDBCTransfersDAO implements TransfersDAO {
 	}
 
 	@Override
-	public void sendTransfer(int userFrom, int userTo, BigDecimal amount) {
-		String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
-				"VALUES (2, 2, ?, ?, ?)";
-		jdbcTemplate.update(sql, userFrom, userTo, amount);
-		accountDAO.addToBalance(amount, userTo);
-		accountDAO.subtractFromBalance(amount, userFrom);
+	public String sendTransfer(int userFrom, int userTo, BigDecimal amount) {
+		if (userFrom == userTo) {
+			return "You can not send money to your self.";
+		}
+		if (amount.compareTo(accountDAO.getBalance(userFrom)) == -1 && amount.compareTo(new BigDecimal(0)) == 1) {
+			String sql = "INSERT INTO transfers (transfer_type_id, transfer_status_id, account_from, account_to, amount) " + 
+					"VALUES (2, 2, ?, ?, ?)";
+			jdbcTemplate.update(sql, userFrom, userTo, amount);
+			accountDAO.addToBalance(amount, userTo);
+			accountDAO.subtractFromBalance(amount, userFrom);		
+			return "Transfer complete";
+		} else {
+			return "Transfer failed due to a lack of funds or amount was less then or equal to 0 or not a valid user";
+		}
 	}
 	
 	private Transfers mapRowToTransfer(SqlRowSet results) {

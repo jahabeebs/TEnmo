@@ -9,6 +9,6 @@ public interface TransfersDAO {
 
 	public List<Transfers> getAllTransfers(int userId);
 	public Transfers getTransferById(int transactionId);
-	public void sendTransfer(int userFrom, int userTo, BigDecimal amount);
+	public String sendTransfer(int userFrom, int userTo, BigDecimal amount);
 	
 }

@@ -90,7 +90,9 @@ public class TransferService {
 				"ID\t\tName\r\n" + 
 				"-------------------------------------------");
 		for (User i : users) {
-			System.out.println(i.getId() + "\t\t" + i.getUsername());
+			if (i.getId() != currentUser.getUser().getId()) {
+				System.out.println(i.getId() + "\t\t" + i.getUsername());				
+			}
 		}
 		System.out.print("-------------------------------------------\r\n" + 
 				"Enter ID of user you are sending to (0 to cancel): ");
@@ -98,7 +100,8 @@ public class TransferService {
 		transfer.setAccountFrom(currentUser.getUser().getId());
 		System.out.print("Enter amount: ");
 		transfer.setAmount(new BigDecimal(Double.parseDouble(scanner.nextLine())));
-		Transfers output = restTemplate.exchange(BASE_URL + "transfer", HttpMethod.POST, makeTransferEntity(transfer), Transfers.class).getBody();
+		String output = restTemplate.exchange(BASE_URL + "transfer", HttpMethod.POST, makeTransferEntity(transfer), String.class).getBody();
+		System.out.println(output);
 	}
 
 	public BigDecimal getBalance() {
