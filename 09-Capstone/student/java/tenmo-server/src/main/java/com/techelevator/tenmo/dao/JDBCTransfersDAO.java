@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.TransferNotFoundException;
 import com.techelevator.tenmo.model.Transfers;
 

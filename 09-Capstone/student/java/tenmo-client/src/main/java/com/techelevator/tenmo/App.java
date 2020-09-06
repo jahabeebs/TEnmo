@@ -27,7 +27,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
     private AuthenticatedUser currentUser;
     private ConsoleService console;
     private AuthenticationService authenticationService;
-    private TransferService transferService;
 
     public static void main(String[] args) {
     	App app = new App(new ConsoleService(System.in, System.out), new AuthenticationService(API_BASE_URL));
@@ -64,7 +63,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			} else if(MAIN_MENU_OPTION_LOGIN.equals(choice)) {
 				login();
 			} else {
-				// the only other option on the main menu is to exit
 				exitProgram();
 			}
 		}
@@ -111,7 +109,6 @@ private static final String API_BASE_URL = "http://localhost:8080/";
 			} else if (LOGIN_MENU_OPTION_REGISTER.equals(choice)) {
 				register();
 			} else {
-				// the only other option on the login menu is to exit
 				exitProgram();
 			}
 		}

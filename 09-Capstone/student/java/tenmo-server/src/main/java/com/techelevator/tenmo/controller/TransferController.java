@@ -3,9 +3,7 @@ package com.techelevator.tenmo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.techelevator.tenmo.dao.TransfersDAO;
 import com.techelevator.tenmo.model.Transfers;
-import com.techelevator.tenmo.security.jwt.TokenProvider;
 
 @RestController
 @PreAuthorize("isAuthenticated()")
