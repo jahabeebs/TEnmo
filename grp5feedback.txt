@@ -1,0 +1,12 @@
+Group 5 Feedback
+
+Great job overall, only 1 issue:
+
+1. On the client side, the TransferService.class could have been
+organized a little bit better. 
+
+- For example the public Transfers[] transfersList() method returns
+an array but it also prints out a report. Ideally, this method should
+just return the array and let some other method or code in the CLI handle
+the printing and the system outs.
+
